@@ -19,37 +19,54 @@
  */
 class CloverGriffonPlugin {
     // the plugin version
-    def version = "0.1"
+    String version = '0.2'
     // the version or versions of Griffon the plugin is designed for
-    def griffonVersion = '0.9 > *' 
+    String griffonVersion = '0.9.5 > *'
     // the other plugins this plugin depends on
-    def dependsOn = [:]
+    Map dependsOn = [:]
     // resources that are included in plugin packaging
-    def pluginIncludes = []
+    List pluginIncludes = []
     // the plugin license
-    def license = 'Apache Software License 2.0'
+    String license = 'Apache Software License 2.0'
     // Toolkit compatibility. No value means compatible with all
     // Valid values are: swing, javafx, swt, pivot, gtk
-    def toolkits = []
+    List toolkits = []
     // Platform compatibility. No value means compatible with all
     // Valid values are:
     // linux, linux64, windows, windows64, macosx, macosx64, solaris
-    def platforms = []
+    List platforms = []
+    // URL where documentation can be found
+    String documentation = ''
+    // URL where source can be found
+    String source = 'https://github.com/griffon/griffon-clover-plugin'
 
-    def author = 'Andres Almiray'
-    def authorEmail = 'aalmiray@users.sourceforge.net'
-    def title = 'Clover Code Coverage for Griffon'
-    def description = '''
-A plugin that integrates Clover into GRIFFON projects.
+    List authors = [
+            [
+                    name: 'Andres Almiray',
+                    email: 'aalmiray@yahoo.com'
+            ]
+    ]
+    String title = 'Code coverage with Clover'
+    // accepts Markdown syntax. See http://daringfireball.net/projects/markdown/ for details
+    String description = '''
+Provides code coverage via [Atlassian's Clover][1]. This is a direct port of the [Grails Clover plugin][2] authored by the Clover team.
+
+Usage
+-----
+
 Clover is a Code Coverage tool that produces beautiful reports which are highly configurable and extensible.
 Clover not only reports which lines of code were executed during a test run, it also reports which tests hit which lines of code.
 Clover's reports include:
-* Tag Clouds of your entire project that compare Complexity with Coverage
-* A TreeMap to visualise the most complex, uncovered areas of your project
-* Fully Cross Referenced HTML view of your source code
-* Much more: See http://atlassian.com/clover 
-'''
 
-    // URL to the plugin's documentation
-    def documentation = 'http://griffon.codehaus.org/Clover+Plugin'
+ * Tag Clouds of your entire project that compare Complexity with Coverage
+ * A TreeMap to visualise the most complex, uncovered areas of your project
+ * Fully Cross Referenced HTML view of your source code
+ * Much more: See [http://atlassian.com/clover][3]
+ * Test Optimization coming soon!
+
+
+[1]: http://www.atlassian.com/software/clover/
+[2]: http://grails.org/plugin/clover
+[3]: http://atlassian.com/clover
+'''
 }

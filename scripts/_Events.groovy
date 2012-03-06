@@ -36,10 +36,7 @@ eventCompileStart = {
   System.setProperty "grover.ast.dump", "" + config.dumpAST
 }
 
-eventSetClasspath = {URLClassLoader rootLoader ->
-
-//  griffonSettings.compileDependencies.each { println it }
-
+eventAllTestsStart = {
   ConfigObject config = mergeConfig()
   println "Clover: Using config: ${config}"
 
@@ -58,7 +55,7 @@ eventSetClasspath = {URLClassLoader rootLoader ->
     if ((!config.containsKey('forceClean') || config.forceClean) && !config.optimize) // do not clean when optimizing
     {
       // force a clean
-      def cleanDirs = [classesDirPath, testDirPath, "${projectWorkDir}/clover"]
+      def cleanDirs = [projectMainClassesDir, testDirPath, "${projectWorkDir}/clover"]
 
       println "Clover: Forcing a clean to ensure Clover instrumentation occurs. Disable by setting: clover.forceClean=false "
       cleanDirs.each {ant.delete(dir: it, failonerror: false)}
@@ -74,7 +71,7 @@ eventTestPhasesStart = {phase ->
 
 }
 //TODO uncomment this when http://jira.codehaus.org/browse/GRAILS-5755 is released
-static class FileOptimizable /**implements Optimizable**/ {
+class FileOptimizable /**implements Optimizable**/ {
 
   final File file;
   final File baseDir;
@@ -455,8 +452,6 @@ private void toggleAntLogging(ConfigObject clover)
  */
 private def ConfigObject mergeConfig()
 {
-
-  final Map argsMap = parseArguments()
   final ConfigObject config = buildConfig.clover == null ? new ConfigObject() : buildConfig.clover
 
   final ConfigSlurper slurper = new ConfigSlurper()
@@ -468,44 +463,4 @@ private def ConfigObject mergeConfig()
 
   return config
 
-}
-
-// Copied from _GriffonArgParsing.groovy since _GriffonCompile.groovy does not depend on parseArguments target
-// and the argsMap is not populated in time for the testStart event.
-// see: http://jira.codehaus.org/browse/GRAILS-2663
-
-private Map parseArguments()
-{
-  // Only ever parse the arguments once. We also don't bother parsing
-  // the arguments if the "args" string is empty.
-//    if (argsMap.size() > 1 || argsMap["params"] || !args) return
-  argsMap = [params: []]
-
-  args?.tokenize().each {token ->
-    def nameValueSwitch = token =~ "--?(.*)=(.*)"
-    if (nameValueSwitch.matches())
-    { // this token is a name/value pair (ex: --foo=bar or -z=qux)
-      final def value = nameValueSwitch[0][2]
-      argsMap[nameValueSwitch[0][1]] = "false".equalsIgnoreCase(value) ? false : value;
-    }
-    else
-    {
-      def nameOnlySwitch = token =~ "--?(.*)"
-      if (nameOnlySwitch.matches())
-      {  // this token is just a switch (ex: -force or --help)
-        argsMap[nameOnlySwitch[0][1]] = true
-      }
-      else
-      { // single item tokens, append in order to an array of params
-        argsMap["params"] << token
-      }
-    }
-  }
-
-  if (argsMap.containsKey('non-interactive'))
-  {
-    println "Setting non-interactive mode"
-    isInteractive = !(argsMap.'non-interactive')
-  }
-  return argsMap
 }

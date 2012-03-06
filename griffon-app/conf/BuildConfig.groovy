@@ -1,7 +1,6 @@
 clover {
-    debug = false;
-    on = false;
-    core.version = 'com.cenqua.clover:clover:3.0.2';
+    debug = false
+    on = false
     license.path = "clover.license"
 }
 
@@ -10,17 +9,15 @@ griffon.project.dependency.resolution = {
     inherits "global"
     log "warn" // log level of Ivy resolver, either 'error', 'warn', 'info', 'debug' or 'verbose'
     repositories {
-        griffonPlugins()
         griffonHome()
-        griffonCentral()
         mavenRepo "https://maven.atlassian.com/content/groups/public/"
         mavenRepo "https://maven.atlassian.com/private-snapshot/"
     }
     dependencies {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
-         build(clover.core.version, changing:false)
-         compile(clover.core.version, changing:false)
-         runtime(clover.core.version, changing:false)
+         build('com.cenqua.clover:clover:3.1.4')
+         compile('com.cenqua.clover:clover:3.1.4')
+         test('com.cenqua.clover:clover:3.1.4')
     }
 }
 
@@ -30,4 +27,18 @@ griffon {
         sponsorLogo = "<br/>"
         footer = "<br/><br/>Made with Griffon (@griffon.version@)"
     }
+}
+
+log4j = {
+    // Example of changing the log pattern for the default console
+    // appender:
+    appenders {
+        console name: 'stdout', layout: pattern(conversionPattern: '%d [%t] %-5p %c - %m%n')
+    }
+
+    error 'org.codehaus.griffon',
+          'org.springframework',
+          'org.apache.karaf',
+          'groovyx.net'
+    warn  'griffon'
 }
