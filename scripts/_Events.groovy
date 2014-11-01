@@ -5,7 +5,7 @@ import org.codehaus.griffon.test.GriffonTestTargetPattern
 
 
 // some clover defaults
-defCloverSrcDirs = ["src/main", "test/unit", "test/integration", "griffon-app"];
+defCloverSrcDirs = ["src/main", "test/unit", "test/integration", "griffon-app", "test/functional"];
 defCloverIncludes = ["**/*.groovy", "**/*.java"];
 defCloverExcludes = ["**/conf/**", "**/plugins/**"];
 defCloverReportDir = "${projectTargetDir}/clover/report" // flim-flamming between projectWorkDir and build. build is consistent
